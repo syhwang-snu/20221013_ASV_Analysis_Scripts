@@ -233,7 +233,39 @@ for(i in 1:length(wks)){
 ```
 
 ### 1.4 HiSAT2 & StringTie
+#### 1.4.1 HiSAT2
 
+HiSAT2 quantification
+```
+/home/hsy/Programs/hisat2-2.2.1/hisat2 \
+-x grcm38_tran/genome_tran \
+-p 16 \
+--rna-strandness RF \
+-1 /data/CHJ_hepatocyte_RNAseq_RAW/Trimmed/PA1_1_trim.fastq.gz \
+-2 /data/CHJ_hepatocyte_RNAseq_RAW/Trimmed/PA1_2_trim.fastq.gz \
+--dta \
+-S PA_Hisat2.sam
+```
+```
+/home/hsy/Programs/hisat2-2.2.1/hisat2 \
+-x grcm38_tran/genome_tran \
+-p 16 \
+--rna-strandness RF \
+-1 /data/CHJ_hepatocyte_RNAseq_RAW/Trimmed/1_1_trim.fastq.gz \
+-2 /data/CHJ_hepatocyte_RNAseq_RAW/Trimmed/1_2_trim.fastq.gz \
+--dta \
+-S Ctrl_Hisat2.sam
+--new-summary
+````
+
+##### Sorting hisat2 output
+```
+samtools view -bS PA_Hisat2.sam > PA_Hisat2.bam
+samtools sort -@ 16 PA_Hisat2.bam -o PA_Hisat2.sorted.bam
+
+samtools view -@ 16 -bS Ctrl_Hisat2.sam > Ctrl_Hisat2.bam
+samtools sort -@ 16 Ctrl_Hisat2.bam -o Ctrl_Hisat2.sorted.bam
+```
 
 
 
