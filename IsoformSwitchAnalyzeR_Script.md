@@ -8,6 +8,13 @@
 
 After extract sequence from extractSequence()
 
+-	Open Reading Frame (ORF/CDS),
+-	protein domains (via Pfam), signal peptides (via SignalP),
+-	Intrinsically Disordered Regions (IDR, via NetSurfP-2 or IUPred2A),
+-	coding potential (via CPAT or CPC2)
+-	sensitivity to Non-sense Mediated Decay (NMD)
+
+
 ## Install CPAT
 1) CPAT : Coding Potential Assessment Tool
 

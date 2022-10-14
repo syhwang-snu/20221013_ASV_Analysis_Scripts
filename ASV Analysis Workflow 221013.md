@@ -56,6 +56,10 @@ for(i in 1:length(wks)){
 ### 1.2 salmon quantification
 
 #### 1.2.1 Decoy sequence preparation
+
+- Using Conda Environment Salmon
+- Using GRCm39 for mouse genome
+
 ```
 grep "^>" <(gunzip -c GRCm39.primary_assembly.genome.fa.gz) | cut -d " " -f 1 > decoys.txt
 sed -i.bak -e 's/>//g' decoys.txt
@@ -235,7 +239,7 @@ for(i in 1:length(wks)){
 ### 1.4 HiSAT2 & StringTie
 #### 1.4.1 HiSAT2
 
-HiSAT2 quantification
+HiSAT2 quantification -- now using GRCm38/mm10
 ```
 /home/hsy/Programs/hisat2-2.2.1/hisat2 \
 -x grcm38_tran/genome_tran \
@@ -267,7 +271,25 @@ samtools view -@ 16 -bS Ctrl_Hisat2.sam > Ctrl_Hisat2.bam
 samtools sort -@ 16 Ctrl_Hisat2.bam -o Ctrl_Hisat2.sorted.bam
 ```
 
+#### 1.4.2 StringTie
 
+```
+stringtie \
+-p 16 \
+-G /data/CHJ_hepatocyte_RNAseq_RAW/stringtie/mm10_NCBI_108.gtf \
+-o Ctrl_StringTie.gtf \
+--rf  \
+/data/CHJ_hepatocyte_RNAseq_RAW/HiSAT2/Ctrl_Hisat2.sorted.bam
+```
+```
+stringtie \
+-p 16 \
+-G /data/CHJ_hepatocyte_RNAseq_RAW/stringtie/mm10_NCBI_108.gtf \
+-o PA_StringTie.gtf \
+--rf  \
+/data/CHJ_hepatocyte_RNAseq_RAW/HiSAT2/PA_Hisat2.sorted.bam
+
+```
 
 ## 2. Downstream Analysis
 
@@ -275,6 +297,10 @@ samtools sort -@ 16 Ctrl_Hisat2.bam -o Ctrl_Hisat2.sorted.bam
 
 
 ### 2.2 Isoform Level Analysis
+
+#### 2.2.1 IsoformSwitchAnalyzeR
+
+
 
 #### 2.2.2 DEXSeq
 
