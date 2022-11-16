@@ -290,6 +290,12 @@ stringtie \
 /data/CHJ_hepatocyte_RNAseq_RAW/HiSAT2/PA_Hisat2.sorted.bam
 
 ```
+```
+
+
+
+```
+
 
 ## 2. Downstream Analysis
 
@@ -338,4 +344,7 @@ sed 's/\"//g' PA_dexseq_count.txt > PA_dexseq_count_clean.txt
 gffread -O -W -w merged.stringtie.transcripts.exons.all.fa -g /data/CHJ_hepatocyte_RNAseq_RAW/HiSAT2/mm10.fa Merged_StringTie.gtf
 
 gffread -O -W -w merged.macrogen.stringtie.transcripts.exons.all.fa -g /data/CHJ_hepatocyte_RNAseq_RAW/HiSAT2/mm10.fa /data/CHJ_hepatocyte_RNAseq_RAW/result_RNAseq/Novel_transcript_analysis/StringTie/Annotation/merged.gtf
+
+gffread -O -W -w 221115.fixed.merged.stringtie.transcripts.exons.all.fa -g /data/HSY/CHJ_hepatocyte_RNAseq_RAW/HiSAT2/mm10.fa 221115_fixed_merged.gtf
+
 ```
