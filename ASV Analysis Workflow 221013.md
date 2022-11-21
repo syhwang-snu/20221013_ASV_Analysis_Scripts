@@ -18,6 +18,12 @@ fastqc \
 - Trim low quality sequences
 
 ```
+Installed to /opt/Trimmomatic-0.39
+executed via /usr/bin/Trimmomatic
+(java jar trimmomatic-0.39.jar)
+```
+
+```
 #! /usr/bin/Rscript
 
 library(glue)
@@ -39,7 +45,7 @@ for(i in 1:length(wks)){
         fastq_2_trim <- glue('{fastqs[j]}_2_trim.fastq.gz')
         fastq_1_unpaired <- glue('{fastqs[j]}_1_unpaired.fastq.gz')
         fastq_2_unpaired <- glue('{fastqs[j]}_2_unpaired.fastq.gz')
-        cmd <- glue('java -jar /home/hsy/Programs/Trimmomatic-0.39/trimmomatic-0.39.jar PE -threads 16 \\
+        cmd <- glue('Trimmomatic PE -threads 16 \\
         /data/CHJ_hepatocyte_RNAseq_RAW/{fastq_1} \\
         /data/CHJ_hepatocyte_RNAseq_RAW/{fastq_2} \\
         /data/CHJ_hepatocyte_RNAseq_RAW/Trimmed/{fastq_1_trim} \\
@@ -57,7 +63,7 @@ for(i in 1:length(wks)){
 
 #### 1.2.1 Decoy sequence preparation
 
-- Using Conda Environment Salmon
+- Using Conda Environment `salmon`
 - Using GRCm39 for mouse genome
 
 ```
@@ -75,7 +81,7 @@ salmon index -t gentrome.fa.gz -d decoys.txt -p 16 -i salmon_index --gencode
 #### 1.2.2 Quantification
 ```
 salmon quant \
--i /data/Gencode_GRCm39/salmon_index \
+-i /data/HSY/Gencode_GRCm39/salmon_index \
 -p 16 \
 -l A \
 --numGibbsSamples 30 \
@@ -273,6 +279,8 @@ samtools sort -@ 16 Ctrl_Hisat2.bam -o Ctrl_Hisat2.sorted.bam
 
 #### 1.4.2 StringTie
 
+1. Stringtie quantification using original gtf & hisat sorted bam file
+
 ```
 stringtie \
 -p 16 \
@@ -290,10 +298,41 @@ stringtie \
 /data/CHJ_hepatocyte_RNAseq_RAW/HiSAT2/PA_Hisat2.sorted.bam
 
 ```
+2. Stringtie merge all samples using GTFs
+```
+stringtie \
+--merge \
+-p 16 \
+-G /data/CHJ_hepatocyte_RNAseq_RAW/stringtie/mm10_NCBI_108.gtf \
+-o Merged_StringTie.gtf \
+Ctrl_StringTie.gtf \
+PA_StringTie.gtf
+```
+3. Gffcompare - compare merged transcriptome with the reference
+```
+gffcompare \
+-r mm10_NCBI_108.gtf \
+Merged_StringTie.gtf
 ```
 
 
+4. stringtie quantification using merged GTF
+```
+stringtie \
+-p 16 \
+-eB \
+-G Merged_StringTie.gtf \
+-o ./Ctrl/Ctrl_Merged.gtf \
+-A ./Ctrl/Ctrl_Merged.tab \
+/data/CHJ_hepatocyte_RNAseq_RAW/HiSAT2/Ctrl_Hisat_mm10.sorted.bam
 
+stringtie \
+-p 16 \
+-eB \
+-G Merged_StringTie.gtf \
+-o ./PA/PA_Merged.gtf \
+-A PA_Merged.tab \
+/data/CHJ_hepatocyte_RNAseq_RAW/HiSAT2/PA_Hisat_mm10.sorted.bam
 ```
 
 

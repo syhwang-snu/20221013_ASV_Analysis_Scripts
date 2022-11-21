@@ -26,7 +26,9 @@ this code for CPAT version 3... but isoformSwitchAnalyzeR does not support CPAT 
 cpat2 version need
 
 ```
-cpat.py -x Mouse_Hexamer.tsv -d Mouse_logitModel.RData -g ../isoformSwitchAnalyzeR_isoform_nt.fasta -o ../CPAT2/v2output
+conda activate env_cpat2
+
+cpat.py -x Mouse_Hexamer.tsv -d Mouse_logitModel.RData -g  ../isoformSwitchAnalyzeR_isoform_nt.fasta -o ../CPAT2/v2output
 ```
 
 
@@ -55,9 +57,25 @@ Pfam : Use default parameters and the amino acid fasta file (_AA.fasta). If the 
 perl pfam_scan.pl -fasta <fasta_file> -dir <directory location of Pfam files>
 
 perl pfam_scan.pl -fasta ../isoformSwitchAnalyzeR_isoform_AA.fasta -dir . -outfile ../pfam_out.txt
+
+
+# -> install to /opt/PfamScan , can use keyword pfam ( /usr/bin/pfam)
+
+
+pfam -fasta ../isoformSwitchAnalyzeR_isoform_AA.fasta -dir /opt/PfamScan -outfile pfam_out.txt
 ```
 
 ## Install SignalP
+SignalP : Use the amino acid fasta file (_AA.fasta). If using the webserver SignalP should be run with the parameter “Short output (no figures)” under “Output format” and one should select the appropriate “Organism group”. When using a stand-alone version SignalP should be run with the ‘-f summary’ option. If using the webserver the results can be downloaded using the “Downloads” button in the top-right corner where the user should select “Prediction summary” and supply the path to the resulting file to the “pathToSignalPresultFile” argument. If a stand-alone version was just supply the path to the summary result file.
+
+```
+#/opt/signalp-5.0b
+
+signalp -batch 50000 -fasta /data/HSY/CHJ_hepatocyte_RNAseq_RAW/IsoformSwitchAnalyzeR/isoformSwitchAnalyzeR_isoform_AA.fasta -prefix PA_isoform
+
+
+```
+
 
 
 ## Install IUPRED2A
